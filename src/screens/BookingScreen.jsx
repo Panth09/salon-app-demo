@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Check, Info } from 'lucide-react'
 
 export default function BookingScreen({ showToast, onConfirm }) {
+  const [selectedTime, setSelectedTime] = useState('10:00 AM')
   const [addons, setAddons] = useState({ deepConditioning: false, massage: false })
 
   const basePrice = 1200;
@@ -24,6 +25,37 @@ export default function BookingScreen({ showToast, onConfirm }) {
       <div className="glass-card" style={{ marginBottom: '24px' }}>
         <h2 style={{ fontSize: '18px' }}>Keratin Hair Spa</h2>
         <p>1 hr 30 mins • ₹{basePrice}</p>
+      </div>
+
+      <h3 style={{ marginBottom: '16px' }}>Select Time</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '32px' }}>
+        {[
+          { time: '10:00 AM', status: 'available' },
+          { time: '11:30 AM', status: 'full' },
+          { time: '01:00 PM', status: 'available' },
+          { time: '02:30 PM', status: 'full' },
+          { time: '04:00 PM', status: 'available' },
+          { time: '05:30 PM', status: 'available' }
+        ].map(slot => (
+          <button 
+            key={slot.time}
+            className={`service-card ${selectedTime === slot.time ? 'selected' : ''}`}
+            onClick={() => slot.status === 'available' && setSelectedTime(slot.time)}
+            disabled={slot.status === 'full'}
+            style={{ 
+              padding: '12px', 
+              textAlign: 'center',
+              opacity: slot.status === 'full' ? 0.5 : 1,
+              cursor: slot.status === 'full' ? 'not-allowed' : 'pointer',
+              position: 'relative'
+            }}
+          >
+            <div style={{ fontSize: '14px', fontWeight: 600, textDecoration: slot.status === 'full' ? 'line-through' : 'none' }}>{slot.time}</div>
+            <div style={{ fontSize: '10px', color: slot.status === 'full' ? '#ef4444' : '#4ade80', marginTop: '4px' }}>
+              {slot.status === 'full' ? 'Booked' : 'Available'}
+            </div>
+          </button>
+        ))}
       </div>
 
       <h3 style={{ marginBottom: '16px' }}>Recommended Add-ons</h3>
@@ -55,35 +87,11 @@ export default function BookingScreen({ showToast, onConfirm }) {
         }}
       >
         <div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-          {[
-            { time: '10:00 AM', status: 'available' },
-            { time: '11:30 AM', status: 'full' },
-            { time: '01:00 PM', status: 'available' },
-            { time: '02:30 PM', status: 'full' },
-            { time: '04:00 PM', status: 'available' },
-            { time: '05:30 PM', status: 'available' }
-          ].map(slot => (
-            <button 
-              key={slot.time}
-              className={`service-card ${selectedTime === slot.time ? 'selected' : ''}`}
-              onClick={() => slot.status === 'available' && setSelectedTime(slot.time)}
-              disabled={slot.status === 'full'}
-              style={{ 
-                padding: '12px', 
-                textAlign: 'center',
-                opacity: slot.status === 'full' ? 0.5 : 1,
-                cursor: slot.status === 'full' ? 'not-allowed' : 'pointer',
-                position: 'relative'
-              }}
-            >
-              <div style={{ fontSize: '14px', fontWeight: 600, textDecoration: slot.status === 'full' ? 'line-through' : 'none' }}>{slot.time}</div>
-              <div style={{ fontSize: '10px', color: slot.status === 'full' ? '#ef4444' : '#4ade80', marginTop: '4px' }}>
-                {slot.status === 'full' ? 'Booked' : 'Available'}
-              </div>
-            </button>
-          ))}
-        </div>
+          <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            Extended Head Massage
+            <Info size={14} color="var(--text-secondary)" />
+          </div>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>+10 mins • ₹350</div>
         </div>
         <div style={{ width: '24px', height: '24px', borderRadius: '50%', border: '1px solid var(--accent-gold)', display: 'flex', justifyContent: 'center', alignItems: 'center', background: addons.massage ? 'var(--accent-gold)' : 'transparent' }}>
           {addons.massage && <Check size={16} color="#121212" />}
