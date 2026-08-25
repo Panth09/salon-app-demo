@@ -164,15 +164,55 @@ const CustomersView = () => (
 );
 
 const ReportsView = () => (
-  <div className="glass-card" style={{ animation: 'fadeIn 0.4s ease-out' }}>
-    <h2 style={{ marginBottom: '24px' }}>Monthly Reports</h2>
-    <div style={{ height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', border: '1px dashed rgba(255,255,255,0.2)' }}>
-      <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-        <BarChart2 size={48} style={{ margin: '0 auto 16px auto', opacity: 0.5 }} />
-        <p>Interactive charts will render here.</p>
-        <p style={{ fontSize: '12px', marginTop: '8px' }}>Revenue vs Targets • Retention Curve • Service Popularity</p>
+  <div style={{ animation: 'fadeIn 0.4s ease-out', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    
+    <div className="glass-card">
+      <h2 style={{ marginBottom: '24px' }}>Revenue Trends (Last 7 Days)</h2>
+      <div style={{ display: 'flex', alignItems: 'flex-end', height: '200px', gap: '12px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        {[
+          { day: 'Mon', h: '40%', val: '₹4.2k' },
+          { day: 'Tue', h: '60%', val: '₹6.8k' },
+          { day: 'Wed', h: '50%', val: '₹5.5k' },
+          { day: 'Thu', h: '80%', val: '₹9.1k' },
+          { day: 'Fri', h: '90%', val: '₹12.4k' },
+          { day: 'Sat', h: '100%', val: '₹14.5k' },
+          { day: 'Sun', h: '70%', val: '₹8.2k' },
+        ].map((bar, i) => (
+          <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+              <div style={{ width: 'clamp(20px, 4vw, 40px)', height: bar.h, background: i === 5 ? 'var(--accent-gold)' : 'rgba(212, 175, 55, 0.3)', borderRadius: '6px 6px 0 0', position: 'relative' }}>
+                <div style={{ position: 'absolute', top: '-24px', left: '50%', transform: 'translateX(-50%)', fontSize: '10px', color: i === 5 ? 'var(--accent-gold)' : 'var(--text-secondary)', fontWeight: 600 }}>{bar.val}</div>
+              </div>
+            </div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{bar.day}</div>
+          </div>
+        ))}
       </div>
     </div>
+
+    <div className="dashboard-bottom-grid">
+      <div className="glass-card">
+         <h3 style={{ marginBottom: '16px' }}>Client Retention</h3>
+         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px' }}><span>New Clients</span> <span style={{color: '#4ade80', fontWeight: 600}}>32%</span></div>
+         <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', marginBottom: '24px' }}>
+            <div style={{ width: '32%', height: '100%', background: '#4ade80', borderRadius: '4px' }}></div>
+         </div>
+
+         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px' }}><span>Returning Clients</span> <span style={{color: 'var(--accent-gold)', fontWeight: 600}}>68%</span></div>
+         <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px' }}>
+            <div style={{ width: '68%', height: '100%', background: 'var(--accent-gold)', borderRadius: '4px' }}></div>
+         </div>
+      </div>
+
+      <div className="glass-card">
+         <h3 style={{ marginBottom: '16px' }}>Service Popularity</h3>
+         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', fontSize: '14px' }}><span>Hair Care & Spas</span> <span style={{fontWeight: 600}}>45%</span></div>
+         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', fontSize: '14px' }}><span>Color & Styling</span> <span style={{fontWeight: 600}}>30%</span></div>
+         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', fontSize: '14px' }}><span>Skincare</span> <span style={{fontWeight: 600}}>15%</span></div>
+         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}><span>Nails & Other</span> <span style={{fontWeight: 600}}>10%</span></div>
+      </div>
+    </div>
+
   </div>
 );
 
