@@ -35,29 +35,31 @@ export default function BookingScreen({ showToast, onConfirm }) {
       <h3 style={{ marginBottom: '16px' }}>Select Service</h3>
       <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px' }} className="hide-scrollbar">
         {servicesList.map(srv => (
-          <button 
+          <div 
             key={srv.id}
+            role="button"
             onClick={() => setSelectedService(srv)}
             className={`service-card ${selectedService.id === srv.id ? 'selected' : ''}`}
-            style={{ minWidth: '160px', padding: '16px', textAlign: 'left', flexShrink: 0 }}
+            style={{ minWidth: '160px', padding: '16px', textAlign: 'left', flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
           >
             <div style={{ fontWeight: 600, marginBottom: '4px' }}>{srv.name}</div>
             <div style={{ fontSize: '12px', color: selectedService.id === srv.id ? '#121212' : 'var(--text-secondary)' }}>{srv.duration} • ₹{srv.price}</div>
-          </button>
+          </div>
         ))}
       </div>
 
       <h3 style={{ marginBottom: '16px' }}>Select Date</h3>
       <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px' }} className="hide-scrollbar">
         {datesList.map(date => (
-          <button 
+          <div 
             key={date}
+            role="button"
             onClick={() => setSelectedDate(date)}
             className={`service-card ${selectedDate === date ? 'selected' : ''}`}
-            style={{ padding: '12px 20px', flexShrink: 0, borderRadius: '20px' }}
+            style={{ padding: '12px 20px', flexShrink: 0, borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
             {date}
-          </button>
+          </div>
         ))}
       </div>
 
@@ -71,24 +73,28 @@ export default function BookingScreen({ showToast, onConfirm }) {
           { time: '04:00 PM', status: 'available' },
           { time: '05:30 PM', status: 'available' }
         ].map(slot => (
-          <button 
+          <div 
             key={slot.time}
+            role="button"
             className={`service-card ${selectedTime === slot.time ? 'selected' : ''}`}
             onClick={() => slot.status === 'available' && setSelectedTime(slot.time)}
-            disabled={slot.status === 'full'}
             style={{ 
               padding: '12px', 
               textAlign: 'center',
               opacity: slot.status === 'full' ? 0.5 : 1,
               cursor: slot.status === 'full' ? 'not-allowed' : 'pointer',
-              position: 'relative'
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             <div style={{ fontSize: '14px', fontWeight: 600, textDecoration: slot.status === 'full' ? 'line-through' : 'none' }}>{slot.time}</div>
             <div style={{ fontSize: '10px', color: slot.status === 'full' ? '#ef4444' : (selectedTime === slot.time ? '#121212' : '#4ade80'), marginTop: '4px' }}>
               {slot.status === 'full' ? 'Booked' : 'Available'}
             </div>
-          </button>
+          </div>
         ))}
       </div>
 
