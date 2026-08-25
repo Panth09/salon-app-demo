@@ -25,7 +25,7 @@ function HorizontalScroll({ children }) {
     return () => el.removeEventListener('wheel', onWheel);
   }, []);
   return (
-    <div ref={scrollRef} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px', scrollBehavior: 'smooth' }} className="hide-scrollbar">
+    <div ref={scrollRef} style={{ flexShrink: 0, display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px', scrollBehavior: 'smooth' }} className="hide-scrollbar">
       {children}
     </div>
   )
@@ -85,7 +85,7 @@ export default function BookingScreen({ showToast, onConfirm }) {
       </HorizontalScroll>
 
       <h3 style={{ marginBottom: '16px' }}>Select Time</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '32px' }}>
+      <div style={{ flexShrink: 0, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '32px' }}>
         {[
           { time: '10:00 AM', status: 'available' },
           { time: '11:30 AM', status: 'full' },
