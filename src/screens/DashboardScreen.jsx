@@ -97,28 +97,72 @@ const OverviewView = () => (
   </div>
 );
 
-const AppointmentsView = () => (
+const AppointmentsView = ({ showToast }) => (
   <div className="glass-card" style={{ animation: 'fadeIn 0.4s ease-out' }}>
-    <h2 style={{ marginBottom: '24px' }}>Today's Schedule</h2>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <h2>Today's Schedule</h2>
+      <div style={{ display: 'flex', gap: '12px', fontSize: '12px', fontWeight: 600 }}>
+        <span style={{ color: '#4ade80' }}>● Open</span>
+        <span style={{ color: '#fbbf24' }}>● Pending</span>
+        <span style={{ color: '#ef4444' }}>● Booked</span>
+      </div>
+    </div>
+    
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {[
-        { time: '10:00 AM', client: 'Priya Sharma', service: 'Keratin Hair Spa + Deep Conditioning', staff: 'Rahul', status: 'In Progress' },
-        { time: '11:30 AM', client: 'Anita Desai', service: 'Global Color', staff: 'Simran', status: 'Upcoming' },
-        { time: '01:00 PM', client: 'Kavita Singh', service: 'Classic Pedicure', staff: 'Pooja', status: 'Upcoming' },
-        { time: '02:30 PM', client: 'Megha Gupta', service: 'Bridal Makeup Trial', staff: 'Simran', status: 'Upcoming' }
+        { time: '10:00 AM', client: 'Priya Sharma', service: 'Keratin Hair Spa', staff: 'Rahul', status: 'Booked', color: '#ef4444' },
+        { time: '11:30 AM', client: null, service: null, staff: null, status: 'Open', color: '#4ade80' },
+        { time: '01:00 PM', client: 'Kavita Singh', service: 'Classic Pedicure', staff: 'Pooja', status: 'Pending', color: '#fbbf24' },
+        { time: '02:30 PM', client: 'Anita Desai', service: 'Global Color', staff: 'Simran', status: 'Booked', color: '#ef4444' },
+        { time: '04:00 PM', client: null, service: null, staff: null, status: 'Open', color: '#4ade80' },
+        { time: '05:30 PM', client: 'Megha Gupta', service: 'Bridal Trial', staff: 'Simran', status: 'Booked', color: '#ef4444' }
       ].map((apt, i) => (
-        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', borderLeft: apt.status === 'In Progress' ? '4px solid var(--accent-gold)' : '4px solid transparent' }}>
+        <div key={i} style={{ 
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', 
+          background: apt.status === 'Open' ? 'rgba(74, 222, 128, 0.05)' : 'rgba(255,255,255,0.02)', 
+          borderRadius: '12px', 
+          borderLeft: `4px solid ${apt.color}`,
+          border: apt.status === 'Open' ? '1px dashed rgba(74, 222, 128, 0.2)' : 'none',
+          borderLeftWidth: '4px',
+          borderLeftStyle: 'solid',
+          borderLeftColor: apt.color
+        }}>
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-            <div style={{ width: '80px', fontWeight: 600, color: 'var(--accent-gold)' }}>{apt.time}</div>
-            <div>
-              <div style={{ fontWeight: 700, fontSize: '18px' }}>{apt.client}</div>
-              <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '4px' }}>{apt.service} • with {apt.staff}</div>
-            </div>
+            <div style={{ width: '80px', fontWeight: 600, color: 'var(--text-secondary)' }}>{apt.time}</div>
+            
+            {apt.status === 'Open' ? (
+              <div style={{ color: '#4ade80', fontStyle: 'italic' }}>Available Slot</div>
+            ) : (
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {apt.client}
+                  {apt.status === 'Pending' && <span style={{ fontSize: '10px', background: 'rgba(251, 191, 36, 0.1)', color: '#fbbf24', padding: '2px 8px', borderRadius: '12px' }}>Awaiting Confirmation</span>}
+                </div>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '4px' }}>{apt.service} • with {apt.staff}</div>
+              </div>
+            )}
           </div>
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {apt.status === 'In Progress' ? <Clock size={20} color="#60a5fa" /> : <CalendarCheck size={20} color="var(--text-secondary)" />}
-            <span style={{ color: apt.status === 'In Progress' ? '#60a5fa' : 'var(--text-secondary)' }}>{apt.status}</span>
-            <MoreVertical size={20} color="var(--text-secondary)" style={{ marginLeft: '16px', cursor: 'pointer' }} />
+            {apt.status === 'Open' ? (
+              <button 
+                onClick={() => showToast('Opening walk-in booking modal...')}
+                style={{ background: 'rgba(74, 222, 128, 0.1)', color: '#4ade80', border: '1px solid rgba(74, 222, 128, 0.2)', padding: '6px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: 600 }}
+              >
+                + Add Walk-in
+              </button>
+            ) : apt.status === 'Pending' ? (
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button onClick={() => showToast('Appointment Confirmed!')} style={{ background: '#4ade80', color: '#000', border: 'none', padding: '6px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: 600 }}>Approve</button>
+                <button onClick={() => showToast('Appointment Declined.')} style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: 'none', padding: '6px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: 600 }}>Decline</button>
+              </div>
+            ) : (
+              <>
+                <Clock size={20} color={apt.color} />
+                <span style={{ color: apt.color, fontWeight: 600, fontSize: '14px' }}>Booked</span>
+                <MoreVertical size={20} color="var(--text-secondary)" style={{ marginLeft: '16px', cursor: 'pointer' }} />
+              </>
+            )}
           </div>
         </div>
       ))}
