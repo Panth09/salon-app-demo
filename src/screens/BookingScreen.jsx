@@ -1,17 +1,27 @@
 import { useState } from 'react'
 import { Check, Info } from 'lucide-react'
 
+const servicesList = [
+  { id: 'keratin', name: 'Keratin Hair Spa', duration: '1 hr 30 mins', price: 1200 },
+  { id: 'haircut', name: 'Premium Haircut', duration: '45 mins', price: 800 },
+  { id: 'color', name: 'Global Hair Color', duration: '2 hrs', price: 2500 },
+  { id: 'facial', name: 'Glow Facial', duration: '1 hr', price: 1500 }
+];
+
+const datesList = ['Today, 25 Aug', 'Tomorrow, 26 Aug', 'Thu, 27 Aug', 'Fri, 28 Aug', 'Sat, 29 Aug'];
+
 export default function BookingScreen({ showToast, onConfirm }) {
+  const [selectedService, setSelectedService] = useState(servicesList[0]);
+  const [selectedDate, setSelectedDate] = useState(datesList[0]);
   const [selectedTime, setSelectedTime] = useState('10:00 AM')
   const [addons, setAddons] = useState({ deepConditioning: false, massage: false })
 
-  const basePrice = 1200;
-  let total = basePrice;
+  let total = selectedService.price;
   if (addons.deepConditioning) total += 500;
   if (addons.massage) total += 350;
 
   const handleConfirm = () => {
-    showToast(`Booking Confirmed! ₹${total} paid via Wallet.`);
+    showToast(`Booking Confirmed for ${selectedDate}! ₹${total} paid via Wallet.`);
     if (onConfirm) onConfirm();
   };
 
@@ -22,9 +32,33 @@ export default function BookingScreen({ showToast, onConfirm }) {
         <h1>Customize Service</h1>
       </div>
 
-      <div className="glass-card" style={{ marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '18px' }}>Keratin Hair Spa</h2>
-        <p>1 hr 30 mins • ₹{basePrice}</p>
+      <h3 style={{ marginBottom: '16px' }}>Select Service</h3>
+      <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px' }} className="hide-scrollbar">
+        {servicesList.map(srv => (
+          <button 
+            key={srv.id}
+            onClick={() => setSelectedService(srv)}
+            className={`service-card ${selectedService.id === srv.id ? 'selected' : ''}`}
+            style={{ minWidth: '160px', padding: '16px', textAlign: 'left', flexShrink: 0 }}
+          >
+            <div style={{ fontWeight: 600, marginBottom: '4px' }}>{srv.name}</div>
+            <div style={{ fontSize: '12px', color: selectedService.id === srv.id ? '#121212' : 'var(--text-secondary)' }}>{srv.duration} • ₹{srv.price}</div>
+          </button>
+        ))}
+      </div>
+
+      <h3 style={{ marginBottom: '16px' }}>Select Date</h3>
+      <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px' }} className="hide-scrollbar">
+        {datesList.map(date => (
+          <button 
+            key={date}
+            onClick={() => setSelectedDate(date)}
+            className={`service-card ${selectedDate === date ? 'selected' : ''}`}
+            style={{ padding: '12px 20px', flexShrink: 0, borderRadius: '20px' }}
+          >
+            {date}
+          </button>
+        ))}
       </div>
 
       <h3 style={{ marginBottom: '16px' }}>Select Time</h3>
@@ -51,7 +85,7 @@ export default function BookingScreen({ showToast, onConfirm }) {
             }}
           >
             <div style={{ fontSize: '14px', fontWeight: 600, textDecoration: slot.status === 'full' ? 'line-through' : 'none' }}>{slot.time}</div>
-            <div style={{ fontSize: '10px', color: slot.status === 'full' ? '#ef4444' : '#4ade80', marginTop: '4px' }}>
+            <div style={{ fontSize: '10px', color: slot.status === 'full' ? '#ef4444' : (selectedTime === slot.time ? '#121212' : '#4ade80'), marginTop: '4px' }}>
               {slot.status === 'full' ? 'Booked' : 'Available'}
             </div>
           </button>
@@ -100,8 +134,8 @@ export default function BookingScreen({ showToast, onConfirm }) {
 
       <div className="glass-card" style={{ marginTop: '24px', background: 'rgba(212, 175, 55, 0.05)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span style={{ color: 'var(--text-secondary)' }}>Base Price</span>
-          <span>₹{basePrice}</span>
+          <span style={{ color: 'var(--text-secondary)' }}>{selectedService.name}</span>
+          <span>₹{selectedService.price}</span>
         </div>
         {addons.deepConditioning && (
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
