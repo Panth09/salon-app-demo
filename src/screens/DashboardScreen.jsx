@@ -47,7 +47,7 @@ const OverviewView = () => (
     </div>
 
     {/* Bottom Section */}
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', marginTop: '16px' }}>
+    <div className="dashboard-bottom-grid">
       
       <div className="glass-card">
         <h3 style={{ marginBottom: '24px' }}>Top Performing Services</h3>

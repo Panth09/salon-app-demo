@@ -10,7 +10,7 @@ export default function LandingScreen({ onStartDemo }) {
             <Sparkles size={16} />
             THE SALON RETENTION ENGINE
           </div>
-          <h1 style={{ fontSize: '48px', lineHeight: '1.2', marginBottom: '24px' }}>A memory system for salons that <span style={{ color: 'var(--accent-rose)' }}>forgot how to remember.</span></h1>
+          <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', lineHeight: '1.2', marginBottom: '24px' }}>A memory system for salons that <span style={{ color: 'var(--accent-rose)' }}>forgot how to remember.</span></h1>
         </div>
 
         <div className="metric-grid" style={{ gap: '32px', marginBottom: '48px', animation: 'fadeIn 0.8s ease-out' }}>
