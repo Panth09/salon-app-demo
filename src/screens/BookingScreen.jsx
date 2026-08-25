@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Check, Info } from 'lucide-react'
 
 const servicesList = [
@@ -9,6 +9,27 @@ const servicesList = [
 ];
 
 const datesList = ['Today, 25 Aug', 'Tomorrow, 26 Aug', 'Thu, 27 Aug', 'Fri, 28 Aug', 'Sat, 29 Aug'];
+
+function HorizontalScroll({ children }) {
+  const scrollRef = useRef(null);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onWheel = (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        el.scrollLeft += e.deltaY;
+      }
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, []);
+  return (
+    <div ref={scrollRef} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px', scrollBehavior: 'smooth' }} className="hide-scrollbar">
+      {children}
+    </div>
+  )
+}
 
 export default function BookingScreen({ showToast, onConfirm }) {
   const [selectedService, setSelectedService] = useState(servicesList[0]);
@@ -33,7 +54,7 @@ export default function BookingScreen({ showToast, onConfirm }) {
       </div>
 
       <h3 style={{ marginBottom: '16px' }}>Select Service</h3>
-      <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px' }} className="hide-scrollbar">
+      <HorizontalScroll>
         {servicesList.map(srv => (
           <div 
             key={srv.id}
@@ -46,10 +67,10 @@ export default function BookingScreen({ showToast, onConfirm }) {
             <div style={{ fontSize: '12px', color: selectedService.id === srv.id ? '#121212' : 'var(--text-secondary)' }}>{srv.duration} • ₹{srv.price}</div>
           </div>
         ))}
-      </div>
+      </HorizontalScroll>
 
       <h3 style={{ marginBottom: '16px' }}>Select Date</h3>
-      <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '16px', margin: '0 -24px 16px -24px', paddingLeft: '24px', paddingRight: '24px' }} className="hide-scrollbar">
+      <HorizontalScroll>
         {datesList.map(date => (
           <div 
             key={date}
@@ -61,7 +82,7 @@ export default function BookingScreen({ showToast, onConfirm }) {
             {date}
           </div>
         ))}
-      </div>
+      </HorizontalScroll>
 
       <h3 style={{ marginBottom: '16px' }}>Select Time</h3>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '32px' }}>
