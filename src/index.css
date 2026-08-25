@@ -112,6 +112,42 @@ body {
   flex-direction: column;
 }
 
+/* Landing Page Specific */
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 24px 16px;
+  width: 100%;
+}
+
+.landing-content {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.landing-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+@media (min-width: 768px) {
+  .landing-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
 .mode-toggle {
   position: fixed;
   top: 16px;

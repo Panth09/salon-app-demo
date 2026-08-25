@@ -2,19 +2,19 @@ import { ArrowRight, Sparkles } from 'lucide-react'
 
 export default function LandingScreen({ onStartDemo }) {
   return (
-    <div className="web-dashboard" style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center', flexDirection: 'column' }}>
+    <div className="landing-container">
       
-      <div style={{ maxWidth: '800px', width: '100%' }}>
+      <div className="landing-content">
         <div style={{ marginBottom: '48px', animation: 'fadeIn 0.6s ease-out' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(212, 175, 55, 0.1)', color: 'var(--accent-gold)', padding: '8px 16px', borderRadius: '30px', fontWeight: 600, letterSpacing: '1px', fontSize: '14px', marginBottom: '24px' }}>
             <Sparkles size={16} />
             THE SALON RETENTION ENGINE
           </div>
-          <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', lineHeight: '1.2', marginBottom: '24px' }}>A memory system for salons that <span style={{ color: 'var(--accent-rose)' }}>forgot how to remember.</span></h1>
+          <h1 style={{ fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: '1.2', marginBottom: '24px' }}>A memory system for salons that <span style={{ color: 'var(--accent-rose)' }}>forgot how to remember.</span></h1>
         </div>
 
-        <div className="metric-grid" style={{ gap: '32px', marginBottom: '48px', animation: 'fadeIn 0.8s ease-out' }}>
-          <div className="glass-card" style={{ padding: '32px', textAlign: 'left' }}>
+        <div className="landing-grid" style={{ animation: 'fadeIn 0.8s ease-out' }}>
+          <div className="glass-card" style={{ padding: '32px', textAlign: 'left', height: '100%' }}>
             <h3 style={{ color: 'var(--accent-gold)', marginBottom: '12px' }}>The Problem</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '16px' }}>
               Meet Priya. She's been going to the same salon for 3 years. But the salon doesn't know when her last visit was, what she got done, or when her spa is due.
@@ -24,7 +24,7 @@ export default function LandingScreen({ onStartDemo }) {
             </p>
           </div>
           
-          <div className="glass-card" style={{ padding: '32px', textAlign: 'left', background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(183, 110, 121, 0.05))' }}>
+          <div className="glass-card" style={{ padding: '32px', textAlign: 'left', height: '100%', background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(183, 110, 121, 0.05))' }}>
             <h3 style={{ color: '#4ade80', marginBottom: '12px' }}>The Solution</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '16px' }}>
               What if the salon remembered Priya as much as she trusted them? Retention is cheaper than acquisition.
