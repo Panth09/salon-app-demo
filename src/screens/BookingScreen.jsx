@@ -31,7 +31,7 @@ function HorizontalScroll({ children }) {
   )
 }
 
-export default function BookingScreen({ showToast, onConfirm }) {
+export default function BookingScreen({ showToast, onConfirm, balance }) {
   const [selectedService, setSelectedService] = useState(servicesList[0]);
   const [selectedDate, setSelectedDate] = useState(datesList[0]);
   const [selectedTime, setSelectedTime] = useState('10:00 AM')
@@ -42,8 +42,7 @@ export default function BookingScreen({ showToast, onConfirm }) {
   if (addons.massage) total += 350;
 
   const handleConfirm = () => {
-    showToast(`Booking Confirmed for ${selectedDate}! ₹${total} paid via Wallet.`);
-    if (onConfirm) onConfirm();
+    if (onConfirm) onConfirm(total, `Booked ${selectedService.name}`);
   };
 
   return (
@@ -181,10 +180,22 @@ export default function BookingScreen({ showToast, onConfirm }) {
           <span>Total</span>
           <span style={{ color: 'var(--accent-gold)' }}>₹{total}</span>
         </div>
+        {balance < total && (
+          <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '8px', textAlign: 'right' }}>
+            Insufficient Balance (₹{balance} available)
+          </div>
+        )}
       </div>
 
       <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
-        <button className="btn-primary" onClick={handleConfirm}>Confirm & Pay ₹{total}</button>
+        <button 
+          className="btn-primary" 
+          onClick={handleConfirm}
+          disabled={balance < total}
+          style={{ opacity: balance < total ? 0.5 : 1, cursor: balance < total ? 'not-allowed' : 'pointer' }}
+        >
+          {balance >= total ? `Confirm & Pay ₹${total}` : 'Add funds to Book'}
+        </button>
       </div>
     </div>
   )

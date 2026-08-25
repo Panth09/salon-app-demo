@@ -12,6 +12,12 @@ function App() {
   const [activeTab, setActiveTab] = useState('wallet')
   const [viewMode, setViewMode] = useState('customer') // 'customer' or 'owner'
   const [toasts, setToasts] = useState([])
+  const [balance, setBalance] = useState(2450)
+  const [transactions, setTransactions] = useState([
+    { id: 1, type: 'positive', title: 'Refund: Cancelled Blowdry', date: 'Today, 10:30 AM', amount: 800 },
+    { id: 2, type: 'negative', title: 'Paid for Root Touch-up', date: 'Aug 15, 2:00 PM', amount: 1200 },
+    { id: 3, type: 'positive', title: 'Cashback: Diwali Offer', date: 'Oct 24, 6:00 PM', amount: 300 },
+  ])
 
   const showToast = (message) => {
     const id = Date.now();
@@ -20,6 +26,23 @@ function App() {
       setToasts(prev => prev.filter(t => t.id !== id));
     }, 3000);
   }
+
+  const handleAddFunds = () => {
+    setBalance(prev => prev + 1000);
+    setTransactions(prev => [{ id: Date.now(), type: 'positive', title: 'Wallet Recharge', date: 'Just now', amount: 1000 }, ...prev]);
+    showToast('Successfully added ₹1000 to Wallet');
+  };
+
+  const handleBookingConfirm = (amount, title) => {
+    if (balance >= amount) {
+      setBalance(prev => prev - amount);
+      setTransactions(prev => [{ id: Date.now(), type: 'negative', title, date: 'Just now', amount }, ...prev]);
+      showToast(`Booking Confirmed! ₹${amount} deducted from Wallet.`);
+      setActiveTab('wallet');
+    } else {
+      showToast('Insufficient Wallet Balance! Please add funds.');
+    }
+  };
 
   if (!isDemoStarted) {
     return (
@@ -50,9 +73,9 @@ function App() {
 
       {viewMode === 'customer' ? (
         <div className="mobile-frame">
-          {activeTab === 'wallet' && <WalletScreen showToast={showToast} />}
+          {activeTab === 'wallet' && <WalletScreen showToast={showToast} balance={balance} transactions={transactions} onAddFunds={handleAddFunds} />}
           {activeTab === 'reminder' && <ReminderScreen showToast={showToast} onBook={() => setActiveTab('booking')} />}
-          {activeTab === 'booking' && <BookingScreen showToast={showToast} onConfirm={() => setActiveTab('wallet')} />}
+          {activeTab === 'booking' && <BookingScreen showToast={showToast} onConfirm={handleBookingConfirm} balance={balance} />}
           {activeTab === 'referral' && <ReferralScreen showToast={showToast} />}
 
           <nav className="bottom-nav">
